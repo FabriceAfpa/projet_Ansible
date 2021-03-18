@@ -1,0 +1,27 @@
+---
+- name: Second playbook
+  hosts: linux
+
+  tasks:
+  - name: Création groupe commun
+    group:
+     name: commun
+
+  - name: Creates directory /usr/local/commun
+    file:
+     group: commun
+     path: /usr/local/commun
+     state: directory
+     mode: 3777
+
+  - name: liste
+    shell: 
+     cmd: ls -ld /usr/local/commun
+    changed_when: false
+           
+    
+
+# ansible -m group -a "name=commun" --become linux
+# ansible -m file -a "group=commun state=directory path=/usr/local/commun mode=3777" -become linux
+
+  

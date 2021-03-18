@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Site Web</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h2>Accueil du site : {{ inventory_hostname }} on {{ ansible_host }}</h2>
+    <div>
+        <h1 height: 400px;
+            width: 800px;
+            background: red;
+            text-align: center> Bienvenue Fabrice !</h1>
+    </div>
+    {% if ansible_distribution|lower in ('debian', 'ubuntu') %}
+      Distribution de type Debian
+    {% elif ansible_distribution|lower in ('redhat', 'centos') %}
+      Distribution de type Redhat
+    {% else %}
+      Distribution inconnue !
+    {% endif %}
+
+    <div>-------</div>
+
+    Adresses IP :
+    <ul>
+      {% for ip in ansible_all_ipv4_addresses %}
+        <li> {{ ip }}</li>
+      {% endfor %}
+    </ul>
+
+    <div>-------</div>
+
+    Autres Adresses IP :
+    <ul>
+      {% for ipv in ansible_all_ipv6_addresses %}
+        <li> {{ ipv }}</li>
+      {% endfor %}
+    </ul>
+
+    <div>-------</div>
+
+    Adresses IP non locales :
+    <ul>
+      {% for ipext in ansible_interfaces %}
+          {% if ipext!='lo' %}
+            <li>  {{ ipext }} </li>
+          {% endif %}
+      {% endfor %}
+    </ul>
+
+  </body>
+
+</html>

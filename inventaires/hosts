@@ -1,0 +1,12 @@
+[debian]
+debian-ansible
+
+[centos]
+centos-ansible
+
+[linux:children]
+debian
+centos
+
+
+

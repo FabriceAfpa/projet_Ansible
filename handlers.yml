@@ -1,0 +1,11 @@
+---
+  - name: Relancer le service apache2
+    systemd:
+      name: "{{ apache_service_name }}"
+      state: reloaded
+    listen: reload_apache
+  - name: Arrêt firewall sur Centos
+    systemd:
+      name: "{{ stop_firewall }}"
+      state: stop
+

@@ -1,0 +1,36 @@
+---
+- name : Mise en œuvre d'un service Apache sur Debian & Centos
+  hosts: linux
+
+  tasks:
+    - name: Installation du paquet apache2
+      package: 
+        name: "{{ apache_package_name }}"
+        state: latest
+
+    - name: Configuration du service pour Apache2
+      systemd:
+        name: "{{ apache_service_name }}"
+        state: started
+        enabled: yes
+
+    - name: Modification du port d'écoute 80 --> 8080
+      lineinfile:
+        path: "{{ apache_config_port_file }}"
+        regex: ^Listen
+        line: Listen "{{ apache_port }}"
+      notify: reload_apache
+    
+    - name: Arrêt service firewalld sur Centos
+      systemd:
+        name: "{{ stop_service_firewall }}"
+        state: stopped
+        enabled: yes
+      when: ansible_distribution|lower == 'centos'
+
+    - meta: flush_handlers
+
+
+  handlers:
+  - name: importation des handlers
+    import_tasks: handlers.yml
